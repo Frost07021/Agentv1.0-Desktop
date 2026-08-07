@@ -1,0 +1,42 @@
+version: 1
+prompt_source: skill.visual_recognition_prompt
+plugins:
+  image_understanding:
+    provider: qwen_vision
+    retries: 2
+    timeout_seconds: 180
+  video_understanding:
+    provider: qwen_native_video
+    fallback_provider: ffmpeg_dense_storyboard
+    max_size_mb: 50
+    native_timeout_seconds: 150
+    native_max_attempts: 2
+    fallback_timeout_seconds: 150
+    fallback_frame_count: 12
+  evidence_frame_extractor:
+    provider: ffmpeg
+    frame_count: 3
+  result_composer:
+    provider: qwen_json
+    timeout_seconds: 180
+
+skills:
+  home-health-check-dental:
+    media: [image]
+    workflow: [image_understanding]
+  home-health-check-stool:
+    media: [image]
+    workflow: [image_understanding]
+  home-health-check-gait:
+    media: [video]
+    video_fps: 6.0
+    workflow: [video_understanding, evidence_frame_extractor, image_understanding, result_composer]
+  home-health-check-behavior:
+    media: [video]
+    video_fps: 4.0
+    workflow: [video_understanding, evidence_frame_extractor, image_understanding, result_composer]
+  home-health-check-xray:
+    media: [image, pdf]
+    pdf_converter: pdftoppm
+    pdf_dpi: 200
+    workflow: [image_understanding, result_composer]
