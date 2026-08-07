@@ -1,0 +1,8 @@
+[project]
+name = "project-f-agent"
+version = "0.3.0"
+description = "Project F AI pet caretaker client and domain agent"
+requires-python = ">=3.12,<3.15"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

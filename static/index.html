@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#282e72" />
+    <meta name="description" content="Fura-AI宠物管家，提供流式养宠对话、报告检测与居家健康检测。" />
+    <title>FURA · AI 宠物管家</title>
+    <link rel="stylesheet" href="/assets/styles.css?v=1.4.19" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="主导航">
+        <div class="brand" aria-label="FURA 首页">
+          <span class="brand-mark">F</span>
+          <span><strong>FURA</strong><small>AI PET CARE</small></span>
+        </div>
+
+        <nav class="primary-nav">
+          <button class="nav-item active" data-view="chat" aria-current="page">
+            <span class="nav-icon">✦</span><span>宠物管家</span>
+          </button>
+          <button class="nav-item" data-view="report">
+            <span class="nav-icon">▤</span><span>报告检测</span><em>AI</em>
+          </button>
+          <button class="nav-item" data-view="home-check">
+            <span class="nav-icon">⌂</span><span>居家检测</span><em>5</em>
+          </button>
+          <button class="nav-item" data-view="history">
+            <span class="nav-icon">◴</span><span>历史记录</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-spacer"></div>
+        <button class="pet-card" id="open-pet-profile" aria-label="编辑宠物档案">
+          <span class="pet-avatar" id="sidebar-pet-avatar">警</span>
+          <span class="pet-copy"><strong id="sidebar-pet-name">警长</strong><small id="sidebar-pet-meta">英短 · 4岁</small></span>
+          <span class="chevron">›</span>
+        </button>
+        <div class="environment"><i></i><span>FURA Desktop 1.4.19 · 服务在线</span></div>
+      </aside>
+
+      <main class="main-content">
+        <header class="mobile-header">
+          <div class="brand compact"><span class="brand-mark">F</span><strong>FURA</strong></div>
+          <button id="mobile-pet-profile" class="avatar-button" aria-label="宠物档案">警</button>
+        </header>
+
+        <section class="view chat-view active" id="view-chat" aria-labelledby="chat-title">
+          <header class="view-header chat-header">
+            <div class="header-pet">
+              <span class="status-avatar">F<span></span></span>
+              <div><h1 id="chat-title">警长的 AI 宠物管家</h1><p><i></i> 在线 · 随时陪你一起照顾它</p></div>
+            </div>
+            <div class="header-actions">
+              <button class="icon-button" data-view="history" title="历史记录" aria-label="查看历史记录">◴</button>
+              <button class="icon-button" id="new-conversation" title="新对话" aria-label="开始新对话">＋</button>
+              <button class="mode-pill" id="mode-toggle" title="切换服务模式"><i></i><span>演示模式</span></button>
+            </div>
+          </header>
+
+          <div class="desktop-workbench">
+            <section class="care-dashboard" aria-label="健康工作台">
+              <article class="desktop-welcome">
+                <div>
+                  <p class="eyebrow">AI PET CARE DESKTOP</p>
+                  <h2>照顾好<span id="home-pet-name">警长</span>的今天</h2>
+                  <p>对话、报告与居家检测共享同一份宠物档案和分析上下文，手机与电脑使用同一套产品逻辑。</p>
+                  <div class="desktop-context"><span><i></i> AI 管家在线</span><strong id="home-pet-meta">英短 · 4岁</strong></div>
+                </div>
+                <div class="desktop-ai-orb" aria-hidden="true"><span>F</span><i></i><b></b></div>
+              </article>
+
+              <section class="desktop-tools" aria-labelledby="desktop-tools-title">
+                <div class="section-heading"><div><small>HEALTH TOOLS</small><h3 id="desktop-tools-title">两大健康功能</h3></div><span>专业 Skill 驱动</span></div>
+                <div class="desktop-tool-grid">
+                  <button class="desktop-tool-card report-card" data-view="report">
+                    <span class="tool-icon">▤</span><small>REPORT</small><strong>报告检测</strong><p>识别指标、标记异常并生成行动建议</p><b>开始解读 →</b>
+                  </button>
+                  <button class="desktop-tool-card home-card" data-view="home-check">
+                    <span class="tool-icon">✦</span><small>HOME CHECK</small><strong>居家检测</strong><p>牙科、便便、步态、行为与 X 光五项分析</p><b>选择检测 →</b>
+                  </button>
+                </div>
+              </section>
+
+              <article class="desktop-insight">
+                <div class="insight-mark">✦</div>
+                <div><small>今日主动关怀</small><h3>留意<span id="insight-pet-name">警长</span>今天的饮水与精神状态</h3><p>连续记录比单次观察更有价值。发现变化时，可以直接告诉右侧 AI 管家。</p></div>
+                <button id="insight-ask" type="button">去问管家</button>
+              </article>
+            </section>
+
+            <section class="conversation-panel" aria-label="AI 宠物管家对话">
+              <div class="conversation-heading"><div><small>CARE CONVERSATION</small><h2>和管家聊一聊</h2></div><span><i></i> 已连接</span></div>
+              <div class="messages" id="messages" aria-live="polite">
+                <article class="message assistant welcome-message">
+                  <div class="assistant-avatar">F</div>
+                  <div class="message-body"><div class="bubble"><p class="eyebrow">你好，我是管家</p><h2>今天想和我聊聊警长的什么？</h2><p>我会结合宠物档案、检测结果与会话上下文，帮你整理观察重点和下一步建议。</p></div><time>刚刚</time></div>
+                </article>
+              </div>
+              <div class="quick-prompts" id="quick-prompts" aria-label="快捷问题"><button>最近不太爱吃饭</button><button>换粮应该怎么过渡？</button><button>总是舔爪子正常吗？</button></div>
+              <form class="composer" id="chat-form">
+                <div class="result-context" id="result-context" hidden><span>正在追问：<strong></strong></span><button type="button" aria-label="取消关联检测结果">×</button></div>
+                <textarea id="chat-input" rows="1" maxlength="150" placeholder="说说你观察到的情况（最多 150 字）…" aria-label="输入消息"></textarea>
+                <div class="composer-footer"><span class="privacy-note"><b id="input-count">0</b>/150 · 仅供健康参考</span><button class="send-button" type="submit" aria-label="发送消息"><span>发送</span><b>↑</b></button></div>
+              </form>
+            </section>
+          </div>
+        </section>
+
+        <section class="view history-view" id="view-history" aria-labelledby="history-title">
+          <header class="view-header history-header">
+            <div><span class="feature-kicker">CARE MEMORY</span><h1 id="history-title">对话历史</h1><p>按宠物查看已经保存的完整对话。</p></div>
+            <button class="primary-button" id="history-new-conversation">＋ 新建对话</button>
+          </header>
+          <div class="history-workspace">
+            <aside class="history-filter-card">
+              <small>筛选范围</small>
+              <div class="history-pet-filters" id="history-pet-filters"></div>
+              <div class="history-privacy"><b>✓</b><p>历史数据保存在这台电脑中，不会生成空白或重复记录。</p></div>
+            </aside>
+            <section class="history-content">
+              <div class="history-content-head"><div><small>CONVERSATIONS</small><h2>已保存对话</h2></div><button class="ghost-button" id="history-refresh">↻ 刷新</button></div>
+              <div class="history-status" id="history-status" hidden></div>
+              <div class="history-list" id="history-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view feature-view" id="view-report" aria-labelledby="report-title">
+          <header class="feature-hero report-hero">
+            <div class="feature-title">
+              <span class="feature-kicker">REPORT INTELLIGENCE</span>
+              <h1 id="report-title">看懂一份报告，<br />也看见健康的变化。</h1>
+              <p>上传血常规、生化或其他宠物检测报告。专业报告 Skill 会自动识别指标、标记异常，并生成可以直接行动的建议。</p>
+            </div>
+            <div class="hero-orbit" aria-hidden="true"><span>AI</span><i></i><b></b></div>
+          </header>
+
+          <div class="feature-grid report-grid">
+            <div class="upload-card" data-upload-scope="report">
+              <div class="upload-heading"><span class="step-number">01</span><div><h2>上传检测报告</h2><p>支持 JPG、PNG、WEBP、PDF，PDF 将自动逐页识别</p></div></div>
+              <div class="desktop-quality" data-quality-scope="report"><span>上传质量</span><div><button class="active" data-quality="smart" type="button"><strong>智能处理</strong><small>推荐</small></button><button data-quality="original" type="button"><strong>原始质量</strong><small>超限时提示</small></button></div></div>
+              <label class="drop-zone" id="report-drop-zone">
+                <input type="file" id="report-file" accept="image/jpeg,image/png,image/webp,application/pdf,.pdf" hidden />
+                <span class="upload-symbol">＋</span>
+                <strong>拖放报告到这里</strong>
+                <p>或点击选择图片 / PDF · 单次最大 50MB</p>
+                <small>上传内容不会用于模型训练</small>
+              </label>
+              <div class="selected-file" id="report-selected" hidden></div>
+              <button class="primary-button analyze-button" id="report-analyze" disabled>开始智能解读 <span>→</span></button>
+            </div>
+
+            <aside class="capability-card">
+              <span class="step-number">02</span>
+              <h2>报告 Skill 会完成</h2>
+              <ol class="capability-list">
+                <li><i>1</i><div><strong>识别报告类型与指标</strong><p>提取检测值、单位和参考区间</p></div></li>
+                <li><i>2</i><div><strong>计算异常与风险等级</strong><p>确定性复核高低值和偏离程度</p></div></li>
+                <li><i>3</i><div><strong>生成个性化建议</strong><p>结合警长的档案给出行动优先级</p></div></li>
+              </ol>
+              <div class="safety-strip"><span>✓</span><p><strong>医疗安全边界</strong><br />结果用于辅助理解，不作疾病诊断</p></div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view feature-view" id="view-home-check" aria-labelledby="home-check-title">
+          <header class="feature-hero home-hero">
+            <div class="feature-title">
+              <span class="feature-kicker">CARE AT HOME</span>
+              <h1 id="home-check-title">日常的小变化，<br />值得被认真看见。</h1>
+              <p>选择你想观察的方向。每个入口都内置独立的专业 Skill、素材标准和结果结构，不需要理解任何模型参数。</p>
+            </div>
+            <div class="pulse-visual" aria-hidden="true"><i></i><i></i><i></i><span>5 项检测</span></div>
+          </header>
+
+          <div class="home-workspace">
+            <div class="check-categories" role="tablist" aria-label="居家检测类型">
+              <button class="check-category active" data-category="dental" role="tab" aria-selected="true">
+                <span class="category-symbol">牙</span><strong>牙科评估</strong><small>口腔照片</small>
+              </button>
+              <button class="check-category" data-category="stool" role="tab" aria-selected="false">
+                <span class="category-symbol">便</span><strong>便便分析</strong><small>便便照片</small>
+              </button>
+              <button class="check-category" data-category="gait" role="tab" aria-selected="false">
+                <span class="category-symbol">步</span><strong>步态分析</strong><small>行走视频</small>
+              </button>
+              <button class="check-category" data-category="behavior" role="tab" aria-selected="false">
+                <span class="category-symbol">行</span><strong>行为评估</strong><small>日常视频</small>
+              </button>
+              <button class="check-category" data-category="xray" role="tab" aria-selected="false">
+                <span class="category-symbol">影</span><strong>X 光解读</strong><small>影像照片</small>
+              </button>
+            </div>
+
+            <div class="check-panel">
+              <div class="check-copy">
+                <span class="feature-kicker" id="check-eyebrow">DENTAL CHECK</span>
+                <h2 id="check-name">牙科评估</h2>
+                <p id="check-description">拍摄牙齿与牙龈的清晰照片，观察牙结石、牙龈状态、口腔清洁度并获得洁牙建议。</p>
+                <ul id="check-tips"><li>自然光下拍摄，避免闪光反射</li><li>尽量露出左右两侧后槽牙</li><li>照片清晰、无遮挡</li></ul>
+              </div>
+              <div class="compact-upload">
+                <div class="desktop-quality" data-quality-scope="home"><span>上传质量</span><div><button class="active" data-quality="smart" type="button"><strong>智能压缩</strong><small>推荐 · 视频上限 100MB</small></button><button data-quality="original" type="button"><strong>原始质量</strong><small>不压缩 · 上限 50MB</small></button></div></div>
+                <label class="drop-zone" id="home-drop-zone">
+                  <input type="file" id="home-file" accept="image/jpeg,image/png,image/webp,application/pdf" hidden />
+                  <span class="upload-symbol">＋</span>
+                  <strong id="home-upload-title">上传口腔照片</strong>
+                  <p id="home-upload-subtitle">点击选择或拖放图片</p>
+                </label>
+                <div class="selected-file" id="home-selected" hidden></div>
+                <button class="primary-button analyze-button" id="home-analyze" disabled>开始牙科评估 <span>→</span></button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <nav class="mobile-nav" aria-label="移动端主导航">
+        <button class="active" data-view="chat"><span>✦</span>管家</button>
+        <button data-view="report"><span>▤</span>报告</button>
+        <button data-view="home-check"><span>⌂</span>居家检测</button>
+        <button data-view="history"><span>◴</span>历史</button>
+      </nav>
+    </div>
+
+    <dialog class="modal pet-modal" id="pet-modal">
+      <form method="dialog" id="pet-form">
+        <div class="modal-header"><div><span class="feature-kicker">PET PROFILE</span><h2 id="pet-modal-title">宠物档案管理</h2></div><button value="cancel" aria-label="关闭">×</button></div>
+        <p class="modal-intro">每只宠物拥有独立档案、对话和检测历史。</p>
+        <div class="pet-profile-manager">
+          <div class="pet-profile-manager-head"><strong>我的宠物</strong><button type="button" id="add-pet-profile">＋ 新增宠物</button></div>
+          <div class="pet-profile-list" id="pet-profile-list"></div>
+        </div>
+        <div class="form-grid">
+          <label><span>名字</span><input name="pet_name" required maxlength="30" /></label>
+          <label><span>物种</span><select name="species"><option value="cat">猫</option><option value="dog">狗</option><option value="other">其他</option></select></label>
+          <label><span>品种</span><input name="breed" maxlength="50" /></label>
+          <label><span>年龄</span><input name="age_years" type="number" min="0" max="100" step="0.5" /></label>
+          <label><span>体重（kg）</span><input name="weight_kg" type="number" min="0.1" max="500" step="0.1" /></label>
+          <label><span>性别</span><select name="sex"><option value="未知">未知</option><option value="公">公</option><option value="母">母</option></select></label>
+        </div>
+        <div class="modal-actions"><button value="cancel" class="ghost-button">取消</button><button value="default" class="primary-button" id="save-pet">保存并切换</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="modal result-modal" id="result-modal">
+      <div id="result-content"></div>
+    </dialog>
+
+    <dialog class="modal history-detail-modal" id="history-detail-modal">
+      <div id="history-detail-content"></div>
+    </dialog>
+
+    <dialog class="modal confirm-modal" id="confirm-modal">
+      <div class="confirm-wrap">
+        <span class="confirm-icon">!</span>
+        <h2 id="confirm-title">请确认</h2>
+        <p id="confirm-message"></p>
+        <div class="modal-actions"><button class="ghost-button" id="confirm-cancel">取消</button><button class="primary-button" id="confirm-primary">确认</button></div>
+      </div>
+    </dialog>
+
+    <div class="loading-overlay" id="loading-overlay" hidden>
+      <div class="analysis-loader"><span></span><h2 id="loading-title">正在理解素材</h2><p id="loading-message">专业 Skill 正在进行媒体校验与结构化分析…</p><div class="progress-line"><i></i></div></div>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="/assets/app.js?v=1.4.19" defer></script>
+  </body>
+</html>

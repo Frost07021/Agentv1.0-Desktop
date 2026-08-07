@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projectf.local/schemas/structured-response.json",
+  "title": "ProjectF Structured Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["reply"],
+  "properties": {
+    "reply": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["emotion", "segments", "suggested_questions"],
+      "properties": {
+        "emotion": {
+          "const": "warm_empathy"
+        },
+        "segments": {
+          "type": "array",
+          "minItems": 10,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "content", "highlights"],
+            "properties": {
+              "type": {
+                "enum": ["section_title", "text", "list_item", "suggestion_item"]
+              },
+              "content": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 150
+              },
+              "highlights": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "uniqueItems": true
+              }
+            }
+          }
+        },
+        "suggested_questions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
+          }
+        }
+      }
+    }
+  }
+}
