@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "home-health-check-gait",
+  "title": "步态分析 - Step 3 分析结果页",
+  "description": "宠物步态运动居家检测分析结果 JSON Schema，对齐 PRD v1.0",
+  "category": "gait",
+  "category_name": "步态分析",
+  "media_type": "video",
+  "dimensions_count": 3,
+  "requires_keyframe_analysis": true,
+  "report_meta": {
+    "category": "gait",
+    "category_name": "步态分析",
+    "test_date": "2026-06-18 14:00",
+    "pet": {
+      "pet_id": null,
+      "pet_name": "宠物昵称",
+      "avatar": null
+    },
+    "media": {
+      "type": "video",
+      "url": "https://cdn.fura.example/media/gait_sample.mp4",
+      "thumbnail_url": "https://cdn.fura.example/media/gait_sample_thumb.jpg",
+      "duration": 10
+    }
+  },
+  "ai_summary": {
+    "severity": "轻度 | 中度 | 严重",
+    "severity_color": "green | orange | red",
+    "summary": "50字以内的简要总结，引用视频中具体时间段，如「视频第3-5秒出现节律停顿，右后肢落地延迟」"
+  },
+  "dimensions": [
+    {
+      "id": "rhythm",
+      "title": "步伐节律",
+      "status_labels": ["正常", "轻微异常", "明显异常"],
+      "color_map": { "正常": "green", "轻微异常": "orange", "明显异常": "red" },
+      "ai_analysis_rule": "描述步伐频率、节律均匀性，引用视频中具体时间段",
+      "suggestion_rule": "正常→维持现有运动量；轻微异常→建议近期减少剧烈运动，持续观察；明显异常→建议就医排查关节或神经问题"
+    },
+    {
+      "id": "coordination",
+      "title": "四肢协调性",
+      "status_labels": ["正常", "需关注", "异常"],
+      "color_map": { "正常": "green", "需关注": "orange", "异常": "red" },
+      "ai_analysis_rule": "描述各肢体抬腿幅度、受力对称性及协调表现，引用视频中观察到的具体动作",
+      "suggestion_rule": "正常→无需特别处理；需关注→建议观察是否有持续偏侧承重或避用某肢体的迹象；异常→建议尽快就医"
+    },
+    {
+      "id": "abnormal_signals",
+      "title": "异常信号",
+      "status_labels": ["未发现异常", "存在异常信号"],
+      "signal_tags": ["跛行倾向", "关节僵硬", "步幅不对称", "身体倾斜", "拖曳步态"],
+      "color_map": { "未发现异常": "green", "存在异常信号": "red" },
+      "ai_analysis_rule": "针对识别到的信号给出解释，注明在视频中的具体出现时段",
+      "suggestion_rule": "无异常→保持日常运动；有信号→提供针对性建议，根据信号严重程度决定是否建议就医"
+    }
+  ],
+  "health_suggestions": {
+    "required_items": 3,
+    "required_order": ["PRIORITY_高", "PRIORITY_中", "PRIORITY_低"],
+    "note": "必须包含高中低三条建议，即使状态良好也需输出",
+    "item_schema": {
+      "ui_label": "PRIORITY_高 | PRIORITY_中 | PRIORITY_低",
+      "ui_color": "blue",
+      "title": "建议标题",
+      "content": "建议详情"
+    },
+    "examples": {
+      "良好": ["PRIORITY_高=保持运动量", "PRIORITY_中=关注步态变化", "PRIORITY_低=定期复测"],
+      "需关注": ["PRIORITY_高=观察步态变化/就医", "PRIORITY_中=减少剧烈运动", "PRIORITY_低=定期复测"]
+    }
+  },
+  "disclaimer": "以上分析由 AI 生成，仅供参考，不构成医疗诊断。如有疑虑，请咨询专业兽医。"
+}

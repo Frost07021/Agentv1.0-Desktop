@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "home-health-check-dental",
+  "title": "牙科评估 - Step 3 分析结果页",
+  "description": "宠物口腔健康居家检测分析结果 JSON Schema，对齐 PRD v1.0",
+  "category": "dental",
+  "category_name": "牙科评估",
+  "media_type": "image",
+  "dimensions_count": 4,
+  "report_meta": {
+    "category": "dental",
+    "category_name": "牙科评估",
+    "test_date": "2026-06-18 10:30",
+    "pet": {
+      "pet_id": null,
+      "pet_name": "宠物昵称",
+      "avatar": null
+    },
+    "media": {
+      "type": "image",
+      "url": "https://cdn.fura.example/media/dental_sample.jpg",
+      "thumbnail_url": "https://cdn.fura.example/media/dental_sample_thumb.jpg",
+      "duration": null
+    }
+  },
+  "ai_summary": {
+    "severity": "轻度 | 中度 | 严重",
+    "severity_color": "green | orange | red",
+    "summary": "50字以内的简要总结，段落开头以数据概览引导"
+  },
+  "dimensions": [
+    {
+      "id": "tartar",
+      "title": "牙结石评估",
+      "status_labels": ["无", "轻微", "中度", "重度"],
+      "color_map": { "无": "green", "轻微": "blue", "中度": "orange", "重度": "red" },
+      "ai_analysis_rule": "描述识别到的牙结石分布位置、颜色特征及程度判断依据",
+      "suggestion_rule": "无→维持日常刷牙；轻微→建议增加洁牙频次；中度→建议近期安排洁牙；重度→建议尽快就医洁牙"
+    },
+    {
+      "id": "gum",
+      "title": "牙龈健康",
+      "status_labels": ["正常", "轻微红肿", "明显炎症"],
+      "color_map": { "正常": "green", "轻微红肿": "blue", "明显炎症": "red" },
+      "ai_analysis_rule": "描述牙龈颜色、边缘状态及是否有红肿出血信号",
+      "suggestion_rule": "正常→继续日常清洁；轻微红肿→建议使用宠物专用漱口水辅助护理；明显炎症→建议就医排查牙周问题"
+    },
+    {
+      "id": "cleanliness",
+      "title": "口腔清洁度",
+      "status_labels": ["清洁", "一般", "较差"],
+      "color_map": { "清洁": "green", "一般": "orange", "较差": "red" },
+      "ai_analysis_rule": "综合牙齿表面污渍、食物残留情况给出整体清洁度描述",
+      "suggestion_rule": "清洁→维持现有护理习惯；一般→建议增加刷牙频次至每天一次；较差→建议进行一次专业口腔清洁"
+    },
+    {
+      "id": "advice",
+      "title": "洁牙建议",
+      "status_labels": ["暂不需要", "建议近期安排", "建议尽快就医"],
+      "color_map": { "暂不需要": "green", "建议近期安排": "orange", "建议尽快就医": "red" },
+      "ai_analysis_rule": "基于前三项维度综合说明给出该建议的判断依据",
+      "suggestion_rule": "输出下次检测的建议时间，如「建议 3 个月后再次检测」"
+    }
+  ],
+  "health_suggestions": {
+    "required_items": 3,
+    "required_order": ["PRIORITY_高", "PRIORITY_中", "PRIORITY_低"],
+    "note": "必须包含高中低三条建议，即使状态良好也需输出（高优先级可输出预防性建议）",
+    "item_schema": {
+      "ui_label": "PRIORITY_高 | PRIORITY_中 | PRIORITY_低",
+      "ui_color": "blue",
+      "title": "建议标题",
+      "content": "建议详情"
+    },
+    "examples": {
+      "良好": ["PRIORITY_高=预防性口腔检查", "PRIORITY_中=关注牙结石变化", "PRIORITY_低=维持日常清洁"],
+      "需关注": ["PRIORITY_高=安排洁牙", "PRIORITY_中=增加刷牙频次", "PRIORITY_低=定期复测"]
+    }
+  },
+  "disclaimer": "以上分析由 AI 生成，仅供参考，不构成医疗诊断。如有疑虑，请咨询专业兽医。"
+}

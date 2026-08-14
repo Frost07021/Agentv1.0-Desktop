@@ -1,0 +1,4 @@
+interface:
+  display_name: "ProjectF 结构化追问回答"
+  short_description: "将宠物检测分析转为五段式暖心追问回答 JSON，支持报告与居家检测"
+  default_prompt: "使用 $structured-response 根据宠物检测分析 JSON 回答用户追问，并输出前端可渲染的五段式 JSON。"

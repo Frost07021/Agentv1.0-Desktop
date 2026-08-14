@@ -1,0 +1,89 @@
+version: 1
+prompt_source: skill.visual_recognition_prompt
+plugins:
+  image_understanding:
+    provider: qwen_vision
+    retries: 2
+    timeout_seconds: 180
+    max_concurrency: 3
+    # Intermediate evidence JSON is smaller than the final report. Keep
+    # reasoning enabled, with a conservative stage-specific cap.
+    thinking_budget: 3072
+    # Single-image dental/stool analysis directly produces the final report.
+    direct_thinking_budget: 4096
+  video_understanding:
+    provider: qwen_native_video
+    max_size_mb: 50
+    # Every input below the hard pixel budget uses this native path only.
+    native_timeout_seconds: 210
+    # Native video is the only runtime Step 1 route below the hard pixel limit.
+    # SSE remains transport telemetry only and never switches the input to frames.
+    # Separate upload/queue/idle-read phases keep terminal failures diagnosable.
+    native_connect_timeout_seconds: 20
+    native_write_timeout_seconds: 120
+    native_pool_timeout_seconds: 20
+    native_total_timeout_seconds: 300
+    native_max_attempts: 2
+    # Only fast connection/HTTP/response failures retry. Read/write timeouts do
+    # not duplicate inference or switch to a second media representation.
+    native_retry_backoff_seconds: 1
+    # Base64 expands binary video by roughly one third. If the upstream gateway
+    # rejects the first high-quality proxy with HTTP 413, rebuild once from the
+    # original media under this raw-byte target and stay on the native route.
+    native_payload_retry_mb: 7.0
+    # The dense route is reserved for inputs that exceed the native hard pixel
+    # budget. It is never started because an SSE is late or native inference fails.
+    fallback_frame_count: 24
+    fallback_fps: 6.0
+    fallback_max_frames: 72
+    # A normal native result gets exactly one blind native Step 1 repeat.  The
+    # repeat never receives the first JSON and has its own bounded wall clock;
+    # an incomplete repeat becomes a visible inconclusive result, not another
+    # fallback chain.
+    normality_review_total_timeout_seconds: 90
+    min_pixels: 65536
+    max_pixels: 921600
+    total_pixels: 100663296
+    # Above 100% of the native pixel budget, deterministically use one dense
+    # timeline from the start; a normal tendency from that route is always
+    # rendered orange/inconclusive because full-video continuity is unavailable.
+    extreme_timeline_total_pixels_ratio: 1.0
+    dense_timeline_timeout_seconds: 240
+    dense_timeline_total_timeout_seconds: 320
+    # Primary Step 1 and its single blind normality challenge remain at the
+    # established quality baseline. Their request deadlines are independent, so
+    # an incomplete 90-second review becomes an orange result instead of cancelling
+    # a successfully completed primary analysis.
+    thinking_budget: 4096
+    normality_review_thinking_budget: 4096
+  evidence_frame_extractor:
+    provider: ffmpeg
+    frame_count: 3
+  result_composer:
+    provider: qwen_json
+    timeout_seconds: 180
+    # Composition is evidence-to-schema reconciliation. Strict validators and
+    # the full-budget repair path remain mandatory when the fast path is invalid.
+    thinking_budget: 2048
+    repair_thinking_budget: 4096
+
+skills:
+  home-health-check-dental:
+    media: [image]
+    workflow: [image_understanding]
+  home-health-check-stool:
+    media: [image]
+    workflow: [image_understanding]
+  home-health-check-gait:
+    media: [video]
+    video_fps: 10.0
+    workflow: [video_understanding, evidence_frame_extractor, image_understanding, result_composer]
+  home-health-check-behavior:
+    media: [video]
+    video_fps: 4.0
+    workflow: [video_understanding, evidence_frame_extractor, image_understanding, result_composer]
+  home-health-check-xray:
+    media: [image, pdf]
+    pdf_converter: pdftoppm
+    pdf_dpi: 200
+    workflow: [image_understanding, result_composer]
